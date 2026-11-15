@@ -1,0 +1,9 @@
+#compdef dlog
+
+if ((CURRENT == 2)) && (($+commands[docker])); then
+  compadd -- ${(f)"$(docker ps -a --format '{{.Names}}' 2> /dev/null)"}
+elif ((CURRENT == 3)); then
+  _numbers
+else
+  _default
+fi

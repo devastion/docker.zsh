@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+dexe() {
+  emulate -L zsh
+  (($#)) || {
+    print -u2 -r -- 'Usage: dexe <container> [command [argument...]]'
+    return 2
+  }
+  local container="${1}"
+  shift
+  (($#)) || set -- /bin/sh
+  docker exec -it "${container}" "$@"
+}

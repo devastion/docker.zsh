@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+__dockerzsh_list_containers() {
+  __dockerzsh_table 'ID Image Names Status Ports' ps "$@"
+}

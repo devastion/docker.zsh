@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+__dockerzsh_table() {
+  emulate -L zsh -o pipe_fail
+
+  local field template=''
+  for field in ${=1}; do
+    template+="{{.${field}}}"$'\t'
+  done
+  shift
+
+  docker "$@" --format "${template%$'\t'}" | column -t -s $'\t' -c "${COLUMNS:-120}"
+}

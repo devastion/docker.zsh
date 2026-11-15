@@ -1,0 +1,7 @@
+#compdef dsh
+
+if ((CURRENT == 2)) && (($+commands[docker])); then
+  compadd -- ${(f)"$(docker ps --format '{{.Names}}' 2> /dev/null)"}
+else
+  _default
+fi

@@ -1,0 +1,11 @@
+#!/usr/bin/env zsh
+
+__dockerzsh_confirm() {
+  emulate -L zsh
+  local -i exit_code
+
+  read -q "?${1:-"Are you sure?"} [y/N] "
+  exit_code=${?}
+  print
+  return exit_code
+}

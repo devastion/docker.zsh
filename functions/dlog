@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+dlog() {
+  emulate -L zsh
+  if [[ -z "${1}" ]]; then
+    print -u2 -r -- 'Usage: dlog <container> [lines]'
+    return 2
+  fi
+  docker logs --follow --tail "${2:-"10"}" "${1}"
+}

@@ -1,0 +1,10 @@
+#!/usr/bin/env zsh
+
+dip() {
+  emulate -L zsh
+  if (($# != 1)); then
+    print -u2 -r -- 'Usage: dip <container>'
+    return 2
+  fi
+  docker inspect -f '{{range $name, $net := .NetworkSettings.Networks}}{{printf "%s: %s\n" $name $net.IPAddress}}{{end}}' "${1}"
+}

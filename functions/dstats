@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+dstats() {
+  __dockerzsh_table 'Name CPUPerc MemUsage NetIO' stats --no-stream
+}

@@ -1,0 +1,13 @@
+#!/usr/bin/env zsh
+
+drm() {
+  emulate -L zsh
+  local -a container_ids=()
+  container_ids=("${(@f)$(docker ps -aq --filter status=exited --filter status=created --filter status=dead)}") || return
+  container_ids=("${(@)container_ids:#}")
+  if ((${#container_ids})); then
+    docker rm "$container_ids[@]"
+  else
+    print -r -- 'No containers to remove'
+  fi
+}

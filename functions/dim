@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+
+dim() {
+  __dockerzsh_table 'Repository Tag ID Size' images
+}

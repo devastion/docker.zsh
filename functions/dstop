@@ -1,0 +1,17 @@
+#!/usr/bin/env zsh
+
+dstop() {
+  emulate -L zsh
+
+  local -a containers=()
+  containers=("${(@f)$(docker ps -q)}") || return
+  containers=("${(@)containers:#}")
+  if ((${#containers} == 0)); then
+    print -u2 -r -- 'No docker containers running!'
+    return 1
+  fi
+
+  print -r -- 'Stopping all docker containers...'
+  docker stop -t 5 "$containers[@]" || return
+  print -r -- 'All docker containers are stopped!'
+}
