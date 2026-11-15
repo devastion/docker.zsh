@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Prune unused Docker resources after confirmation
 
 dprune() {
   emulate -L zsh

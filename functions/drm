@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Remove exited, created and dead containers
 
 drm() {
   emulate -L zsh

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Run a command (default: a shell) in a running container
 
 dexe() {
   emulate -L zsh

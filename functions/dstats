@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Show container resource usage in a table
 
 dstats() {
   __dockerzsh_table 'Name CPUPerc MemUsage NetIO' stats --no-stream

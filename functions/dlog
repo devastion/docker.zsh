@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Follow the logs of a container
 
 dlog() {
   emulate -L zsh

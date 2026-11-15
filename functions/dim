@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: List Docker images in a table
 
 dim() {
   __dockerzsh_table 'Repository Tag ID Size' images

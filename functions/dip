@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Print the IP address of a container
 
 dip() {
   emulate -L zsh

@@ -1,4 +1,5 @@
 #!/usr/bin/env zsh
+# desc: Open a shell in a running container
 
 dsh() {
   emulate -L zsh -o pipe_fail
