@@ -1,0 +1,12 @@
+#!/usr/bin/env zsh
+# desc: List Docker containers in a table
+
+dps() {
+  emulate -L zsh
+  # -q and --format set their own output; a table would conflict with them.
+  if ((${@[(I)(-q|-[!-]#q*|--quiet|--format|--format=*)]})); then
+    docker ps "$@"
+    return
+  fi
+  _dockerzsh_table 'ID Image Names Status Ports' ps "$@"
+}

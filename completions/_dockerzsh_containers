@@ -1,0 +1,6 @@
+#autoload
+# Complete container names. Usage: _dockerzsh_containers [-a]  (-a: include stopped)
+local -a names
+((${+commands[docker]})) || return 1
+names=(${(f)"$(docker ps "$@" --format '{{.Names}}' 2> /dev/null)"})
+_describe -t containers 'container' names

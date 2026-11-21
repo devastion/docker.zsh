@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# desc: Run a command (default: a shell) in a running container
+# desc: Run a command (default: /bin/sh) in a running container
 
 dexe() {
   emulate -L zsh
@@ -10,5 +10,7 @@ dexe() {
   local container="${1}"
   shift
   (($#)) || set -- /bin/sh
-  docker exec -it "${container}" "$@"
+  local -a flags=(-i)
+  [[ -t 0 && -t 1 ]] && flags+=(-t)
+  docker exec "${flags[@]}" "${container}" "$@"
 }

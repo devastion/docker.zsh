@@ -4,6 +4,9 @@
 dstop() {
   emulate -L zsh
 
+  local timeout
+  zstyle -s ':docker:dstop' timeout timeout || timeout=5
+
   local -a containers=()
   containers=("${(@f)$(docker ps -q)}") || return
   containers=("${(@)containers:#}")
@@ -13,6 +16,6 @@ dstop() {
   fi
 
   print -r -- 'Stopping all docker containers...'
-  docker stop -t 5 "$containers[@]" || return
+  docker stop -t "${timeout}" "${containers[@]}" || return
   print -r -- 'All docker containers are stopped!'
 }

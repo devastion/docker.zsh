@@ -1,14 +1,22 @@
 #!/usr/bin/env zsh
-# desc: Remove exited, created and dead containers
+# desc: Remove exited, created and dead containers after confirmation
 
 drm() {
   emulate -L zsh
-  local -a container_ids=()
+  local -a force=() container_ids=()
+  zparseopts -D -F -- f=force || return 2
+  if (($#)); then
+    print -u2 -r -- 'Usage: drm [-f]'
+    return 2
+  fi
+
   container_ids=("${(@f)$(docker ps -aq --filter status=exited --filter status=created --filter status=dead)}") || return
   container_ids=("${(@)container_ids:#}")
-  if ((${#container_ids})); then
-    docker rm "$container_ids[@]"
-  else
+  if ((${#container_ids} == 0)); then
     print -r -- 'No containers to remove'
+    return 0
   fi
+
+  ((${#force})) || _dockerzsh_confirm "Remove ${#container_ids} container(s)?" || return 1
+  docker rm "${container_ids[@]}"
 }

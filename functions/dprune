@@ -9,10 +9,6 @@ dprune() {
     print -u2 -r -- 'Usage: dprune [-a] [-v]'
     return 2
   fi
-  ((${+commands[docker]})) || {
-    print -u2 -r -- 'dprune: docker not found'
-    return 127
-  }
 
   local context
   context="$(docker context show)" || return
@@ -21,7 +17,7 @@ dprune() {
   local what='unused Docker resources'
   ((${#all})) && what+=', all unused images'
   ((${#volumes})) && what+=', and all unused volumes'
-  __dockerzsh_confirm "Prune ${what}?" || return 1
+  _dockerzsh_confirm "Prune ${what}?" || return 1
 
   local -a args=(--force)
   ((${#all})) && args+=(-a)

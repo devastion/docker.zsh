@@ -2,5 +2,5 @@
 # desc: List Docker images in a table
 
 dim() {
-  __dockerzsh_table 'Repository Tag ID Size' images
+  _dockerzsh_table 'Repository Tag ID Size' images
 }

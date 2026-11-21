@@ -1,11 +1,12 @@
 #!/usr/bin/env zsh
 
-__dockerzsh_table() {
+_dockerzsh_table() {
   emulate -L zsh -o pipe_fail
 
   local field template=''
   for field in ${=1}; do
-    template+="{{.${field}}}"$'\t'
+    # "-" keeps empty fields from collapsing in column(1).
+    template+="{{or .${field} \"-\"}}"$'\t'
   done
   shift
 

@@ -1,0 +1,5 @@
+#compdef dprune
+
+_arguments \
+  '-a[also remove all unused images]' \
+  '-v[also remove unused volumes]'

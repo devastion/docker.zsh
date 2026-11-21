@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# desc: Open a shell in a running container
+# desc: Open a shell in a running container (pick with fzf when no argument)
 
 dsh() {
   emulate -L zsh -o pipe_fail
@@ -8,41 +8,28 @@ dsh() {
     print -u2 -r -- 'Usage: dsh [container]'
     return 2
   }
-  local running
-  running="$(docker ps -q)" || return
-  [[ -n "${running}" ]] || {
-    print -u2 -r -- 'No docker containers running!'
-    return 1
-  }
 
-  local container_id selected line
-  local -a containers=()
-
-  if [[ -n "${1}" ]]; then
-    containers=("${(@f)$(docker ps --format '{{.ID}}\t{{.Names}}')}") || return
-    for line in "$containers[@]"; do
-      if [[ "${line#*$'\t'}" == "${1}" ]]; then
-        container_id="${line%%$'\t'*}"
-        break
-      fi
-    done
-  else
+  local container="${1}" selected
+  if [[ -z "${container}" ]]; then
     ((${+commands[fzf]})) || {
       print -u2 -r -- 'dsh: fzf not found'
       return 127
     }
+    local running
+    running="$(docker ps -q)" || return
+    [[ -n "${running}" ]] || {
+      print -u2 -r -- 'No docker containers running!'
+      return 1
+    }
     selected="$(
       docker ps --format '{{.ID}}\t{{.Names}}\t{{.Image}}\t{{.Status}}' |
-        fzf -1
+        fzf -1 --delimiter=$'\t' --with-nth=2..
     )" || return 1
-    container_id="${selected%%$'\t'*}"
+    container="${selected%%$'\t'*}"
   fi
 
-  if [[ -z "${container_id}" ]]; then
-    print -u2 -r -- "Couldn't find container id"
-    return 1
-  fi
-
-  docker exec -e TERM -e COLORTERM -e LC_ALL=C.UTF-8 -it "${container_id}" sh -c \
+  local -a flags=(-i)
+  [[ -t 0 && -t 1 ]] && flags+=(-t)
+  docker exec -e TERM -e COLORTERM "${flags[@]}" "${container}" sh -c \
     'if [ -x /bin/bash ]; then exec /bin/bash; else exec /bin/sh; fi'
 }

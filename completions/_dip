@@ -1,7 +1,7 @@
 #compdef dip
 
-if ((CURRENT == 2)) && (($+commands[docker])); then
-  compadd -- ${(f)"$(docker ps -a --format '{{.Names}}' 2> /dev/null)"}
+if ((CURRENT == 2)); then
+  _dockerzsh_containers -a
 else
   _default
 fi
